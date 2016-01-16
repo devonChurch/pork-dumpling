@@ -1,6 +1,7 @@
 const Timer = require('./timer');
 const Hue = require('./hue');
 const Background = require('./background');
+const heart = require('./heart');
 
 const Face = class {
 
@@ -14,6 +15,9 @@ const Face = class {
 		this.Background = new Background(this);
 		this.animate();
 
+		// temp...
+		heart.play(this);
+
 	}
 
 	animate() {
@@ -21,6 +25,7 @@ const Face = class {
 		this.clearCanvas();
 		this.Hue.animate();
 		this.Background.animate();
+		// this.Heart.playSequence();
 		this.Timer.animate();
 
 		requestAnimationFrame(() => this.animate());
