@@ -4,6 +4,8 @@ const Beat = require('./beat');
 const Hue = require('./hue');
 const Background = require('./background');
 const Heart = require('./heart');
+const Rate = require('./rate');
+const Graph = require('./graph');
 
 const Face = class {
 
@@ -17,6 +19,8 @@ const Face = class {
 		this.Background = new Background(this);
 		this.Beat = new Beat(this);
 		this.Heart = new Heart(this);
+		this.Rate = new Rate(this);
+		this.Graph = new Graph(this);
 		this.animate();
 
 	}
@@ -29,6 +33,8 @@ const Face = class {
 		this.Timer.animate();
 		this.Beat.animate();
 		this.Heart.animate();
+		this.Rate.animate();
+		this.Graph.animate();
 
 		requestAnimationFrame(() => this.animate());
 

@@ -6,7 +6,7 @@ const Helper = require('./helper');
  */
 
 /**
- * Class that modifies the hue of the base HSL color over the 360 its spectrum.
+ * Class xxxxxxxx
  */
 const Beat = class {
 
@@ -17,17 +17,9 @@ const Beat = class {
 	 */
 	constructor(Face) {
 
-		console.log('New beat');
-
-		// AVG 130
-		// 2.16666667 / seconds
-		// one ping every 461.53846ms
-
-
 		this.Face = Face;
 		this.nextBeat = this.currentTime;
-
-		// heart.play(this.Face);
+		this.i = 0;
 
 	}
 
@@ -57,8 +49,8 @@ const Beat = class {
 
 		if (this.currentProgress) {
 
-			console.log('BEAT!');
 			this.updateBeat();
+			this.i += 1;
 
 		}
 

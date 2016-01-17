@@ -17,7 +17,7 @@ const Timer = class {
 	constructor(Face) {
 
 		this.Face = Face;
-		this.offset = this.calculateTime();
+		this.offset = this.elapsedTime;
 
 	}
 
@@ -26,7 +26,7 @@ const Timer = class {
 	 * time.
 	 * @return {number} The elapsed time.
 	 */
-	calculateTime() {
+	get elapsedTime() {
 
 		const date = new Date();
 		const offset = this.offset || 0;
@@ -77,10 +77,8 @@ const Timer = class {
 		const units = ' mins';
 		const y = 95;
 		const hsl = `hsl(${this.Face.Hue.current}, 100%, 65%)`;
-		/**
-		 * Centre text by offsetting half of the total combined text width from
-		 * the canvas centre.
-		 */
+		// Centre text by offsetting half of the total combined text width from
+		// the canvas centre.
 		const offset = (ctx.measureText(format).width + ctx.measureText(units).width) / 2;
 		let x = (this.Face.size / 2) - offset;
 
@@ -101,7 +99,7 @@ const Timer = class {
 	 */
 	animate() {
 
-		const time = this.calculateTime();
+		const time = this.elapsedTime;
 		const format = this.formatTime(time);
 		this.injectTime(format);
 

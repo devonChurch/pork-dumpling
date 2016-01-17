@@ -37,11 +37,7 @@ const Heart = class {
 	 */
 	updateFacets() {
 
-		for (const facet of ['echoLarge', 'echoSmall', 'base']) {
-
-			this.buildFacet(facet);
-
-		}
+		for (const facet of ['echoLarge', 'echoSmall', 'base']) this.buildFacet(facet);
 
 	}
 
@@ -69,9 +65,9 @@ const Heart = class {
 	 */
 	get echoSmallProperties() {
 
-		const luminosity = 30;
+		const luminosity = 40;
 		const alpha = this.i > this.climax ? 1 - (this.i / this.duration) : 0;
-		const scale = this.i > this.climax ? 1 + (this.i * 0.015) : 1;
+		const scale = this.i > this.climax ? 1 + (this.i * 0.01) : 1;
 
 		return {luminosity, alpha, scale};
 
@@ -85,7 +81,7 @@ const Heart = class {
 	 */
 	get echoLargeProperties() {
 
-		const luminosity = 20;
+		const luminosity = 30;
 		const alpha = this.i > this.climax ? 1 - (this.i / this.duration) : 0;
 		const scale = this.i > this.climax ? 1 + (this.i * 0.03) : 1;
 
