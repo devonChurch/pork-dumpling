@@ -1,6 +1,21 @@
-.watch__face {
-    border: 1px solid black;
-    font: {
-        family: 'Roboto', sans-serif;
+.watch {
+    $size: 200px;
+    height: $size;
+    margin: 100px;
+    position: relative;
+    width: $size;
+
+    &__heart,
+    &__face {
+        border: 1px solid black;
+        border-radius: 50%;
+        font: {
+            family: 'Roboto', sans-serif;
+        }
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
     }
 }

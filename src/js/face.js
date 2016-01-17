@@ -1,7 +1,9 @@
+const Helper = require('./helper');
 const Timer = require('./timer');
+const Beat = require('./beat');
 const Hue = require('./hue');
 const Background = require('./background');
-const heart = require('./heart');
+const Heart = require('./heart');
 
 const Face = class {
 
@@ -13,29 +15,22 @@ const Face = class {
 		this.Timer = new Timer(this);
 		this.Hue = new Hue(this);
 		this.Background = new Background(this);
+		this.Beat = new Beat(this);
+		this.Heart = new Heart(this);
 		this.animate();
-
-		// temp...
-		heart.play(this);
 
 	}
 
 	animate() {
 
-		this.clearCanvas();
+		Helper.clearCanvas(this);
 		this.Hue.animate();
 		this.Background.animate();
-		// this.Heart.playSequence();
 		this.Timer.animate();
+		this.Beat.animate();
+		this.Heart.animate();
 
 		requestAnimationFrame(() => this.animate());
-
-	}
-
-
-	clearCanvas() {
-
-		this.ctx.clearRect(0, 0, this.size, this.size);
 
 	}
 

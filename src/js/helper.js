@@ -20,6 +20,12 @@ const Helper = class {
 
     }
 
+	clearCanvas(ref) {
+
+		ref.ctx.clearRect(0, 0, ref.size, ref.size);
+
+	}
+
     // round({value, decimalPlace = 1}) {
 	//
     //     let round = '1';
