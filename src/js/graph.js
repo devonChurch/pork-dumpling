@@ -1,3 +1,5 @@
+const Helper = require('./helper');
+
 /**
  * Graph module.
  * @module ./beat
@@ -19,6 +21,7 @@ const Graph = class {
 		this.legacyGraph = this.buildLegacy;
 		this.currentGraph = this.buildCurrent;
 		this.BaseLine = 150;
+		this.i = 0;
 
 		console.log(this.legacyGraph);
 		console.log(this.currentGraph);
@@ -65,7 +68,13 @@ const Graph = class {
 
 	updateCurrent() {
 
-		this.currentGraph.push(0);
+		const sin = Math.sin(this.i);
+		const offset = sin * this.i * 2.5;
+
+		this.i = this.i < 1 ? 0 : this.i - 1;
+
+		this.currentGraph.push(offset);
+
 	}
 
 	drawPoints(ctx, graph) {
@@ -148,6 +157,12 @@ const Graph = class {
         ctx.fillStyle = this.currentColor();
         ctx.fill();
 		ctx.closePath();
+
+	}
+
+	registerBeat() {
+
+		this.i = Helper.randomise({min: 5, max: 15});
 
 	}
 

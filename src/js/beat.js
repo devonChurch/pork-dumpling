@@ -50,6 +50,7 @@ const Beat = class {
 		if (this.currentProgress) {
 
 			this.updateBeat();
+			this.Face.Graph.registerBeat();
 			this.i += 1;
 
 		}
