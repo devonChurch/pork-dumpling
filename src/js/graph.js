@@ -59,8 +59,6 @@ const Graph = class {
 
 	updateLegacy() {
 
-		console.log('update legacy');
-
 		this.legacyGraph = this.currentGraph;
 		this.currentGraph = this.buildCurrent;
 
@@ -89,20 +87,24 @@ const Graph = class {
 
 	legacyColor() {
 
-		const alpha = 1 - (1 / this.Face.size * this.currentGraph.length);
+		const alpha = 1 - (1 / this.Face.size * this.currentGraph.length * 1.5);
+		const gradient = this.Face.ctx.createLinearGradient(0, 0, 100, 0);
 
-		return `hsla(${this.Face.Hue.current}, 100%, 65%, ${alpha})`;
+		gradient.addColorStop(0, `hsla(${this.Face.Hue.current}, 100%, 65%, 0)`);
+		gradient.addColorStop(1, `hsla(${this.Face.Hue.current}, 100%, 65%, ${alpha})`);
+
+		return gradient;
 
 	}
 
 	currentColor() {
 
-		// const gradient = ctx.createLinearGradient(0, 0, 100, 0);
-		// gradient.addColorStop(0, `hsla(${this.Face.Hue.current}, 100%, 65%, 0)`);
-		// gradient.addColorStop(1, `hsla(${this.Face.Hue.current}, 100%, 65%, 1)`);
+		const gradient = this.Face.ctx.createLinearGradient(0, 0, 100, 0);
 
-		// return 'red';
-		return `hsl(${this.Face.Hue.current}, 100%, 65%)`;
+		gradient.addColorStop(0, `hsla(${this.Face.Hue.current}, 100%, 65%, 0)`);
+		gradient.addColorStop(1, `hsla(${this.Face.Hue.current}, 100%, 65%, 1)`);
+
+		return gradient;
 
 	}
 
@@ -116,15 +118,6 @@ const Graph = class {
 		ctx.moveTo(0, this.BaseLine);
 
 		this.drawPoints(ctx, graph);
-		// ctx.lineTo(50, 0);
-		// ctx.lineTo(50, 50);
-		// ctx.lineTo(0, 50);
-
-		// ctx.strokeStyle = hsl;
-		// ctx.lineWidth = 5;
-
-
-
 
 		ctx.strokeStyle = this[`${graph}Color`](ctx);
 		ctx.stroke();
@@ -148,7 +141,7 @@ const Graph = class {
 
 		const ctx = this.Face.ctx;
 		const length = this.currentGraph.length;
-		const radius = 4;
+		const radius = 3;
 		const x = length - radius;
 		const y = this.BaseLine - this.currentGraph[length - 1];
 

@@ -28,11 +28,15 @@ const Timer = class {
 	 */
 	get elapsedTime() {
 
-		const date = new Date();
-		const offset = this.offset || 0;
-		const time = date.getTime() - offset;
+		// const date = new Date();
+		// const offset = this.offset || 0;
+		// const time = date.getTime() - offset;
+		//
+		// return time;
 
-		return time;
+		// return 1234567;
+		// return 600000;
+		return 3987654;
 
 	}
 
@@ -44,13 +48,12 @@ const Timer = class {
 	 */
 	formatTime(time) {
 
-		// Convert time into seconds.
-		time = time / 1000;
+		const hours = Math.floor(time / (1000 * 60 * 60));
+		time = time % (1000 * 60 * 60);
+		const minutes = Math.floor(time / (1000 * 60));
+		const seconds = Math.floor(time % (1000 * 60) / 1000);
 
-		const minutes = Math.floor(time / 60);
-		const seconds = Math.floor(time % 60);
-
-		return `${this.queryDigits(minutes)}:${this.queryDigits(seconds)}`;
+		return `${this.queryHours(hours)}${this.queryMinutes(minutes)}${this.querySeconds(seconds)}`;
 
 	}
 
@@ -66,6 +69,30 @@ const Timer = class {
 
 	}
 
+	queryHours(hours) {
+
+		return hours > 0 ? `${hours}:` : '';
+
+	}
+
+	queryMinutes(minutes) {
+
+		return minutes > 0 ? `${this.queryDigits(minutes)}:` : '';
+
+	}
+
+	querySeconds(seconds) {
+
+		return `${this.queryDigits(seconds)}`;
+
+	}
+
+	queryUnits(format) {
+
+		return format.length > 5 ? 'hrs' : format.length > 2 ? 'mins' : 'secs';
+
+	}
+
 	/**
 	 * Injects the formatted elapsed time onto the canvas with a centered align
 	 * appearance, custom fonts and dynamic color.
@@ -74,7 +101,7 @@ const Timer = class {
 	injectTime(format) {
 
 		const ctx = this.Face.ctx;
-		const units = ' mins';
+		const units = ` ${this.queryUnits(format)}`;
 		const y = 95;
 		const hsl = `hsl(${this.Face.Hue.current}, 100%, 65%)`;
 		// Centre text by offsetting half of the total combined text width from

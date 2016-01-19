@@ -17,7 +17,7 @@ const Rate = class {
 
 		this.Face = Face;
 		this.i = 0;
-		this.currentBpm = 130;
+		this.currentBpm = '000';
 
 	}
 
