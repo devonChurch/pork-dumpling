@@ -9,10 +9,10 @@ const Graph = require('./graph');
 
 const Face = class {
 
-	constructor() {
+	constructor(canvas) {
 
-		this.canvas = document.getElementById('watch__face');
-		this.size = this.canvas.getAttribute('width');
+		this.canvas = canvas;
+		this.size = this.canvas.width;
 		this.ctx = this.canvas.getContext('2d');
 		this.Timer = new Timer(this);
 		this.Hue = new Hue(this);
@@ -42,4 +42,4 @@ const Face = class {
 
 };
 
-module.exports = new Face();
+module.exports = Face;

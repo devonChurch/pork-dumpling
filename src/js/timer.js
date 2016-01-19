@@ -28,15 +28,11 @@ const Timer = class {
 	 */
 	get elapsedTime() {
 
-		// const date = new Date();
-		// const offset = this.offset || 0;
-		// const time = date.getTime() - offset;
-		//
-		// return time;
+		const date = new Date();
+		const offset = this.offset || 0;
+		const time = date.getTime() - offset;
 
-		// return 1234567;
-		// return 600000;
-		return 3987654;
+		return time;
 
 	}
 
