@@ -1,0 +1,19 @@
+.watch {
+    $size: 200px;
+    height: $size;
+    position: relative;
+    width: $size;
+
+    &__heart,
+    &__face {
+        border-radius: 50%;
+        font: {
+            family: 'Roboto', sans-serif;
+        }
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+}
