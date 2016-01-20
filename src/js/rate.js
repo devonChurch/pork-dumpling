@@ -1,6 +1,6 @@
 /**
  * Rate module.
- * @module ./beat
+ * @module ./rate
  */
 
 /**
