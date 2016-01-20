@@ -1,4 +1,5 @@
 const Helper = require('./helper');
+const Pause = require('./pause');
 const Timer = require('./timer');
 const Beat = require('./beat');
 const Hue = require('./hue');
@@ -14,6 +15,7 @@ const Face = class {
 		this.canvas = canvas;
 		this.size = this.canvas.width;
 		this.ctx = this.canvas.getContext('2d');
+		this.Pause = new Pause(this);
 		this.Timer = new Timer(this);
 		this.Hue = new Hue(this);
 		this.Background = new Background(this);
@@ -26,6 +28,8 @@ const Face = class {
 	}
 
 	animate() {
+
+		console.log('+');
 
 		Helper.clearCanvas(this);
 		this.Hue.animate();
