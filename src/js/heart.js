@@ -93,6 +93,9 @@ const Heart = class {
 	 * Turns the initial SVG heart shape into Canvas bezier curves, places the
 	 * shape in the applicable location and modifies its aesthetic based on the r
 	 * eferenced bespoke parameters.
+	 *
+	 * http://www.professorcloud.com/svg-to-canvas/
+	 *
 	 * @param {string} facet - The reference in which to query the current Class
 	 * to get its bespoke heart properties from.
 	 */

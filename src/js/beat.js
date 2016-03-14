@@ -6,7 +6,8 @@ const Helper = require('./helper');
  */
 
 /**
- * Class xxxxxxxx
+ * Class that represents a human heat beat that both the BPM meter and graph
+ * systems reference.
  */
 const Beat = class {
 
@@ -23,6 +24,10 @@ const Beat = class {
 
 	}
 
+	/**
+	 * Gets the current time from the OS clock.
+	 * @return {number} The current time.
+	 */
 	get currentTime() {
 
 		const date = new Date();
@@ -31,6 +36,10 @@ const Beat = class {
 
 	}
 
+	/**
+	 * Diffs the current time against the “next beat” interval.
+	 * @return {boolean} The next beat’s relevance.
+	 */
 	get currentProgress() {
 
 		const time = this.currentTime;
@@ -39,12 +48,18 @@ const Beat = class {
 
 	}
 
+	/**
+	 * Randomises when the next heart beat should run.
+	 */
 	updateBeat() {
 
 		this.nextBeat = this.nextBeat + Helper.randomise({min: 400, max: 520});
 
 	}
 
+	/**
+	 * Updates the heart beat system on each requestAnimationFrame tick.
+	 */
 	animate() {
 
 		if (this.currentProgress) {

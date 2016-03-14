@@ -4,12 +4,12 @@
  */
 
 /**
- * Class that xxxxxxxx.
+ * Class that renders the background color based on the current hue value..
  */
 const Background = class {
 
 	/**
-	 * Create a xxxxxxx.
+	 * Create a background instance.
 	 * @param {class} Face - The watch face base class that this timer is bound
 	 * to.
 	 */
@@ -20,7 +20,7 @@ const Background = class {
 	}
 
 	/**
-	 * xxxxx.
+	 * Generate the background instance on the Pork Dumpling canvas.
 	 */
 	updateBackground() {
 
@@ -35,7 +35,7 @@ const Background = class {
 	}
 
 	/**
-	 * xxxxx.
+	 * Prompts the backgrounds hue value on each requestAnimationFrame tick.
 	 */
 	animate() {
 

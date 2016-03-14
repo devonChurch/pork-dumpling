@@ -88,7 +88,22 @@
 	var Rate = __webpack_require__(14);
 	var Graph = __webpack_require__(15);
 	
+	/**
+	 * Face module.
+	 * @module ./face
+	 */
+	
+	/**
+	 * Class that acts as the root initialiser for the Pork Dumpling execution.
+	 */
 	var Face = (function () {
+	
+		/**
+	  * Create a watch face instance.
+	  * @param {class} canvas - The sole canvas element that the execution
+	  * instance will be constructed on.
+	  */
+	
 		function Face(canvas) {
 			_classCallCheck(this, Face);
 	
@@ -106,12 +121,14 @@
 			this.animate();
 		}
 	
+		/*
+	  * The required redraw functions executed each requestAnimationFrame tick.
+	  **/
+	
 		_createClass(Face, [{
 			key: 'animate',
 			value: function animate() {
 				var _this = this;
-	
-				console.log('+');
 	
 				Helper.clearCanvas(this);
 				this.Hue.animate();
@@ -137,6 +154,14 @@
 /* 6 */
 /***/ function(module, exports) {
 
+	/**
+	 * Helper module.
+	 * @module ./helper
+	 */
+	
+	/**
+	 * Class that holds a series of more “generic” functions uses across the execution.
+	 */
 	"use strict";
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -145,56 +170,58 @@
 	
 	var Helper = (function () {
 	
-				// A series of more “generic” functions uses across the execution.
+		/**
+	  * Create a helper instance.
+	  * @param {class} Face - The watch face base class that this timer is bound
+	  * to.
+	  */
 	
-				function Helper(Face) {
-							_classCallCheck(this, Helper);
+		function Helper(Face) {
+			_classCallCheck(this, Helper);
 	
-							this.Face = Face;
-				}
+			this.Face = Face;
+		}
 	
-				_createClass(Helper, [{
-							key: "randomise",
-							value: function randomise(_ref) {
-										var _ref$min = _ref.min;
-										var min = _ref$min === undefined ? 0 : _ref$min;
-										var max = _ref.max;
+		/**
+	  * Generate a random number between two values.
+	  * @param {number} min - The minimum possible value in the random generation process.
+	  * @param {number} max - The maximum possible value in the random generation process.
+	  * @return {number} - The randomly generated value.
+	  */
 	
-										return Math.floor(Math.random() * (max - min + 1)) + min;
-							}
-				}, {
-							key: "clearCanvas",
-							value: function clearCanvas(ref) {
+		_createClass(Helper, [{
+			key: "randomise",
+			value: function randomise(_ref) {
+				var _ref$min = _ref.min;
+				var min = _ref$min === undefined ? 0 : _ref$min;
+				var max = _ref.max;
 	
-										ref.ctx.clearRect(0, 0, ref.size, ref.size);
-							}
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
 	
-							// round({value, decimalPlace = 1}) {
-							//
-							//     let round = '1';
-							//
-							//     for (let i = 0; i < decimalPlace; i += 1) round += '0';
-							//     round = parseInt(round, 10);
-							//
-							//     return Math.round(value * round) / round;
-							//
-							// }
-							//
-							// findPercentage({percentage, of}) {
-							//
-							//     return percentage / 100 * of;
-							//
-							// }
+			/**
+	   * Generates a randomised boolean.
+	   * @return {boolean} - random boolean.
+	   */
+		}, {
+			key: "clearCanvas",
 	
-				}, {
-							key: "boolean",
-							get: function get() {
+			/**
+	   * Clear the canvas of all content.
+	   */
+			value: function clearCanvas(ref) {
 	
-										return this.randomise({ max: 1 }) % 2 === 0 ? false : true;
-							}
-				}]);
+				ref.ctx.clearRect(0, 0, ref.size, ref.size);
+			}
+		}, {
+			key: "boolean",
+			get: function get() {
 	
-				return Helper;
+				return this.randomise({ max: 1 }) % 2 === 0 ? false : true;
+			}
+		}]);
+	
+		return Helper;
 	})();
 	
 	module.exports = new Helper();
@@ -217,12 +244,17 @@
 	 */
 	
 	/**
-	 * Class xxxxxx
+	 * Class that creases a synergy between the requestAnimationFrame sequence and
+	 * the native OS timer. When the user moves away from the executions active tab
+	 * the requestAnimation frame pauses the sequence. This is great for performance
+	 * however if the native OS timer continues to run there will be an irregularity
+	 * between the two once the tab becomes active again. We therefore pause the
+	 * “perceived” timer in sync with the requestAniamtionFrame stream.
 	 */
 	var Pause = (function () {
 	
 		/**
-	  * Create a beat instance.
+	  * Create a pause instance.
 	  * @param {class} Face - The watch face base class that this timer is bound
 	  * to.
 	  */
@@ -235,6 +267,11 @@
 			this.activated = 0;
 		}
 	
+		/**
+	  * Activate the invisible API to manage the timer when the execution goes
+	  * into a dormant/active state.
+	  */
+	
 		_createClass(Pause, [{
 			key: 'listeners',
 			value: function listeners() {
@@ -246,6 +283,10 @@
 					return _this.deactivate();
 				});
 			}
+	
+			/**
+	   * Activate a pause by getting a final time reference.
+	   */
 		}, {
 			key: 'activate',
 			value: function activate() {
@@ -253,6 +294,12 @@
 				var date = new Date();
 				this.activated = date.getTime();
 			}
+	
+			/**
+	   * Deactivate the pause state by riffing the stared final time stamp with a
+	   * new current time value. We rip the elapsed time out of the Pork Dumpling
+	   * timer and continue as per usual =)
+	   */
 		}, {
 			key: 'deactivate',
 			value: function deactivate() {
@@ -763,7 +810,8 @@
 	 */
 	
 	/**
-	 * Class xxxxxxxx
+	 * Class that represents a human heat beat that both the BPM meter and graph
+	 * systems reference.
 	 */
 	var Beat = (function () {
 	
@@ -781,12 +829,25 @@
 			this.i = 0;
 		}
 	
+		/**
+	  * Gets the current time from the OS clock.
+	  * @return {number} The current time.
+	  */
+	
 		_createClass(Beat, [{
 			key: 'updateBeat',
+	
+			/**
+	   * Randomises when the next heart beat should run.
+	   */
 			value: function updateBeat() {
 	
 				this.nextBeat = this.nextBeat + Helper.randomise({ min: 400, max: 520 });
 			}
+	
+			/**
+	   * Updates the heart beat system on each requestAnimationFrame tick.
+	   */
 		}, {
 			key: 'animate',
 			value: function animate() {
@@ -806,6 +867,11 @@
 	
 				return date.getTime();
 			}
+	
+			/**
+	   * Diffs the current time against the “next beat” interval.
+	   * @return {boolean} The next beat’s relevance.
+	   */
 		}, {
 			key: 'currentProgress',
 			get: function get() {
@@ -870,7 +936,7 @@
 			}
 	
 			/**
-	   * Prompts the current hue value to increment.
+	   * Prompts the current hue value to increment on each requestAnimationFrame tick.
 	   */
 		}, {
 			key: 'animate',
@@ -895,7 +961,7 @@
 	 */
 	
 	/**
-	 * Class that xxxxxxxx.
+	 * Class that renders the background color based on the current hue value..
 	 */
 	"use strict";
 	
@@ -906,7 +972,7 @@
 	var Background = (function () {
 	
 		/**
-	  * Create a xxxxxxx.
+	  * Create a background instance.
 	  * @param {class} Face - The watch face base class that this timer is bound
 	  * to.
 	  */
@@ -918,7 +984,7 @@
 		}
 	
 		/**
-	  * xxxxx.
+	  * Generate the background instance on the Pork Dumpling canvas.
 	  */
 	
 		_createClass(Background, [{
@@ -935,7 +1001,7 @@
 			}
 	
 			/**
-	   * xxxxx.
+	   * Prompts the backgrounds hue value on each requestAnimationFrame tick.
 	   */
 		}, {
 			key: "animate",
@@ -1021,6 +1087,9 @@
 	   * Turns the initial SVG heart shape into Canvas bezier curves, places the
 	   * shape in the applicable location and modifies its aesthetic based on the r
 	   * eferenced bespoke parameters.
+	   *
+	   * http://www.professorcloud.com/svg-to-canvas/
+	   *
 	   * @param {string} facet - The reference in which to query the current Class
 	   * to get its bespoke heart properties from.
 	   */
@@ -1140,7 +1209,7 @@
 	 */
 	
 	/**
-	 * Class xxxxxx
+	 * Class that represents the current average heart rate in a BPM format.
 	 */
 	'use strict';
 	
@@ -1164,6 +1233,10 @@
 			this.currentBpm = '000';
 		}
 	
+		/**
+	  * Calculate the average BPM value.
+	  */
+	
 		_createClass(Rate, [{
 			key: 'updateBpm',
 			value: function updateBpm() {
@@ -1173,6 +1246,11 @@
 	
 				this.currentBpm = Math.round(bpm);
 			}
+	
+			/**
+	   * Inject the BPM text onto the canvas area making sure the different text
+	   * elements flow next to each other like generic text in the DOM.
+	   */
 		}, {
 			key: 'injectBpm',
 			value: function injectBpm() {
@@ -1182,28 +1260,28 @@
 				var units = ' bpm';
 				var y = 70;
 				var hsl = 'hsl(' + this.Face.Hue.current + ', 100%, 65%)';
-	
 				var x = 85;
 	
 				ctx.font = '300 30px Roboto';
 				ctx.fillStyle = hsl;
 				ctx.fillText(bpm, x, y);
-	
 				x += ctx.measureText(bpm).width;
-	
 				ctx.font = '300 12px Roboto';
 				ctx.fillStyle = hsl;
 				ctx.fillText(units, x, y);
 			}
 	
-			// current time * x = 60000ms
-			// 2bpm / 1000 = Math.round(2 * 60) = 120bpm / min
-			// 180000 * x = 60000 |
-			// 360bpm / 180000 = 360 * 0.333333 = 120bpm / min
-			// 3,600,000
-	
+			/**
+	   * We update the BPM value every 60 frames to avoid possible flickering as
+	   * the BPM’s average constantly changes.
+	   * @return {boolean} Checks if the 60 frame duration has elapsed.
+	   */
 		}, {
 			key: 'animate',
+	
+			/**
+	   * Updates the BPM value on each requestAnimationFrame tick.
+	   */
 			value: function animate() {
 	
 				if (this.frequency) this.updateBpm();
@@ -1240,11 +1318,11 @@
 	
 	/**
 	 * Graph module.
-	 * @module ./beat
+	 * @module ./graph
 	 */
 	
 	/**
-	 * Class xxxxxx
+	 * Class that represents the “richter graph” aesthetic that dictates a heart beat.
 	 */
 	var Graph = (function () {
 	
@@ -1262,26 +1340,30 @@
 			this.currentGraph = this.buildCurrent;
 			this.BaseLine = 150;
 			this.i = 0;
-	
-			console.log(this.legacyGraph);
-			console.log(this.currentGraph);
-	
-			// Have an old and new line
-			// the old one has its alpha depreciate
-			// https://www.youtube.com/watch?v=GVm8pFDxUjU
-	
-			// temp
-			this.legacyGraph[20] = 50;
-			this.legacyGraph[21] = -20;
 		}
+	
+		/**
+	  * Since there is no legacy graph to override initially we create a
+	  * flatlined representation.
+	  */
 	
 		_createClass(Graph, [{
 			key: 'updateLegacy',
+	
+			/**
+	   * When the current graph’s paths are exhausted we move it to ride as the
+	   * legacy representation and begin to build a new current graph.
+	   */
 			value: function updateLegacy() {
 	
 				this.legacyGraph = this.currentGraph;
 				this.currentGraph = this.buildCurrent;
 			}
+	
+			/**
+	   * Generates the next point in the current graph while adhering to the
+	   * format of the previous points the exponential sine curve system.
+	   */
 		}, {
 			key: 'updateCurrent',
 			value: function updateCurrent() {
@@ -1293,6 +1375,12 @@
 	
 				this.currentGraph.push(offset);
 			}
+	
+			/**
+	   * Draw a line between two points
+	   * @param {object} ctx - the canvas context
+	   * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	   */
 		}, {
 			key: 'drawPoints',
 			value: function drawPoints(ctx, graph) {
@@ -1302,6 +1390,11 @@
 					ctx.lineTo(i, this.BaseLine - this[graph + 'Graph'][i]);
 				}
 			}
+	
+			/**
+	   * Fade away the legacy graph instance.
+	   * @return {object} A canvas gradient.
+	   */
 		}, {
 			key: 'legacyColor',
 			value: function legacyColor() {
@@ -1314,6 +1407,11 @@
 	
 				return gradient;
 			}
+	
+			/**
+	   * Color the current graph instance.
+	   * @return {object} A canvas gradient.
+	   */
 		}, {
 			key: 'currentColor',
 			value: function currentColor() {
@@ -1325,28 +1423,39 @@
 	
 				return gradient;
 			}
+	
+			/**
+	   * Draw a graph instance.
+	   * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	   */
 		}, {
 			key: 'drawGraph',
 			value: function drawGraph(graph) {
 	
 				var ctx = this.Face.ctx;
-				// const hsl = `hsl(${this.Face.Hue.current}, 100%, 65%)`;
 	
 				ctx.beginPath();
 				ctx.moveTo(0, this.BaseLine);
-	
 				this.drawPoints(ctx, graph);
-	
 				ctx.strokeStyle = this[graph + 'Color'](ctx);
 				ctx.stroke();
 				ctx.closePath();
 			}
+	
+			/**
+	   * Checks if there is room for more current graph points of if we need to
+	   * generate a new current instance.
+	   */
 		}, {
 			key: 'queryCircumstance',
 			value: function queryCircumstance() {
 	
 				if (this.currentGraph.length >= this.Face.size) this.updateLegacy();
 			}
+	
+			/**
+	   * inject required graph instance onto the canvas.
+	   */
 		}, {
 			key: 'injectInstances',
 			value: function injectInstances() {
@@ -1356,6 +1465,10 @@
 					var graph = _arr[_i];this.drawGraph(graph);
 				}
 			}
+	
+			/**
+	   * Draws in the bright circular “pip” the indicates the currents graph progress.
+	   */
 		}, {
 			key: 'injectProgress',
 			value: function injectProgress() {
@@ -1372,6 +1485,11 @@
 				ctx.fill();
 				ctx.closePath();
 			}
+	
+			/**
+	   * Decide the severity of the current heart beat - this will dictate how
+	   * dominant the sign curves influence is on the graph.
+	   */
 		}, {
 			key: 'registerBeat',
 			value: function registerBeat() {
@@ -1379,9 +1497,9 @@
 				this.i = Helper.randomise({ min: 5, max: 15 });
 			}
 	
-			// has the graph reached its end?
-			// swap to legacy and create a fresh current
-	
+			/**
+	   * Runs through the sequence in order to update the graph sequence.
+	   */
 		}, {
 			key: 'animate',
 			value: function animate() {
@@ -1404,6 +1522,11 @@
 	
 				return points;
 			}
+	
+			/**
+	   * Generate the first point in the current graph that we will begin to build
+	   * during the animation process.
+	   */
 		}, {
 			key: 'buildCurrent',
 			get: function get() {

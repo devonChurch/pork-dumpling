@@ -2,11 +2,11 @@ const Helper = require('./helper');
 
 /**
  * Graph module.
- * @module ./beat
+ * @module ./graph
  */
 
 /**
- * Class xxxxxx
+ * Class that represents the “richter graph” aesthetic that dictates a heart beat.
  */
 const Graph = class {
 
@@ -23,20 +23,12 @@ const Graph = class {
 		this.BaseLine = 150;
 		this.i = 0;
 
-		console.log(this.legacyGraph);
-		console.log(this.currentGraph);
-
-		// Have an old and new line
-		// the old one has its alpha depreciate
-		// https://www.youtube.com/watch?v=GVm8pFDxUjU
-
-		// temp
-		this.legacyGraph[20] = 50;
-		this.legacyGraph[21] = -20;
-
-
 	}
 
+	/**
+	 * Since there is no legacy graph to override initially we create a
+	 * flatlined representation.
+	 */
 	get buildLegacy() {
 
 		const points = [];
@@ -51,12 +43,20 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Generate the first point in the current graph that we will begin to build
+	 * during the animation process.
+	 */
 	get buildCurrent() {
 
 		return [0];
 
 	}
 
+	/**
+	 * When the current graph’s paths are exhausted we move it to ride as the
+	 * legacy representation and begin to build a new current graph.
+	 */
 	updateLegacy() {
 
 		this.legacyGraph = this.currentGraph;
@@ -64,6 +64,10 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Generates the next point in the current graph while adhering to the
+	 * format of the previous points the exponential sine curve system.
+	 */
 	updateCurrent() {
 
 		const sin = Math.sin(this.i);
@@ -75,6 +79,11 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Draw a line between two points
+	 * @param {object} ctx - the canvas context
+	 * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	 */
 	drawPoints(ctx, graph) {
 
 		for (let i = 0; i < this.Face.size; i += 1) {
@@ -85,6 +94,10 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Fade away the legacy graph instance.
+	 * @return {object} A canvas gradient.
+	 */
 	legacyColor() {
 
 		const alpha = 1 - (1 / this.Face.size * this.currentGraph.length * 1.5);
@@ -97,6 +110,10 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Color the current graph instance.
+	 * @return {object} A canvas gradient.
+	 */
 	currentColor() {
 
 		const gradient = this.Face.ctx.createLinearGradient(0, 0, 100, 0);
@@ -108,35 +125,45 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Draw a graph instance.
+	 * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	 */
 	drawGraph(graph) {
 
 		const ctx = this.Face.ctx;
-		// const hsl = `hsl(${this.Face.Hue.current}, 100%, 65%)`;
-
 
 		ctx.beginPath();
 		ctx.moveTo(0, this.BaseLine);
-
 		this.drawPoints(ctx, graph);
-
 		ctx.strokeStyle = this[`${graph}Color`](ctx);
 		ctx.stroke();
 		ctx.closePath();
 
 	}
 
+	/**
+	 * Checks if there is room for more current graph points of if we need to
+	 * generate a new current instance.
+	 */
 	queryCircumstance() {
 
 		if (this.currentGraph.length >= this.Face.size) this.updateLegacy();
 
 	}
 
+	/**
+	 * inject required graph instance onto the canvas.
+	 */
 	injectInstances() {
 
 		for (const graph of ['legacy', 'current']) this.drawGraph(graph);
 
 	}
 
+	/**
+	 * Draws in the bright circular “pip” the indicates the currents graph progress.
+	 */
 	injectProgress() {
 
 		const ctx = this.Face.ctx;
@@ -153,15 +180,19 @@ const Graph = class {
 
 	}
 
+	/**
+	 * Decide the severity of the current heart beat - this will dictate how
+	 * dominant the sign curves influence is on the graph.
+	 */
 	registerBeat() {
 
 		this.i = Helper.randomise({min: 5, max: 15});
 
 	}
 
-	// has the graph reached its end?
-	// swap to legacy and create a fresh current
-
+	/**
+	 * Runs through the sequence in order to update the graph sequence.
+	 */
 	animate() {
 
 		this.queryCircumstance();
