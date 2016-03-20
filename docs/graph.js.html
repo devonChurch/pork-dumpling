@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: graph.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: graph.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Helper = require('./helper');
+
+/**
+ * Graph module.
+ * @module ./graph
+ */
+
+/**
+ * Class that represents the “richter graph” aesthetic that dictates a heart beat.
+ */
+const Graph = class {
+
+	/**
+	 * Create a graph instance.
+	 * @param {class} Face - The watch face base class that this timer is bound
+	 * to.
+	 */
+	constructor(Face) {
+
+		this.Face = Face;
+		this.legacyGraph = this.buildLegacy;
+		this.currentGraph = this.buildCurrent;
+		this.BaseLine = 150;
+		this.i = 0;
+
+	}
+
+	/**
+	 * Since there is no legacy graph to override initially we create a
+	 * flatlined representation.
+	 */
+	get buildLegacy() {
+
+		const points = [];
+
+		for (let i = 0; i &lt; this.Face.size; i += 1) {
+
+			points[i] = 0;
+
+		}
+
+		return points;
+
+	}
+
+	/**
+	 * Generate the first point in the current graph that we will begin to build
+	 * during the animation process.
+	 */
+	get buildCurrent() {
+
+		return [0];
+
+	}
+
+	/**
+	 * When the current graph’s paths are exhausted we move it to ride as the
+	 * legacy representation and begin to build a new current graph.
+	 */
+	updateLegacy() {
+
+		this.legacyGraph = this.currentGraph;
+		this.currentGraph = this.buildCurrent;
+
+	}
+
+	/**
+	 * Generates the next point in the current graph while adhering to the
+	 * format of the previous points the exponential sine curve system.
+	 */
+	updateCurrent() {
+
+		const sin = Math.sin(this.i);
+		const offset = sin * this.i * 2.5;
+
+		this.i = this.i &lt; 1 ? 0 : this.i - 1;
+
+		this.currentGraph.push(offset);
+
+	}
+
+	/**
+	 * Draw a line between two points
+	 * @param {object} ctx - the canvas context
+	 * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	 */
+	drawPoints(ctx, graph) {
+
+		for (let i = 0; i &lt; this.Face.size; i += 1) {
+
+			ctx.lineTo(i, this.BaseLine - this[`${graph}Graph`][i]);
+
+		}
+
+	}
+
+	/**
+	 * Fade away the legacy graph instance.
+	 * @return {object} A canvas gradient.
+	 */
+	legacyColor() {
+
+		const alpha = 1 - (1 / this.Face.size * this.currentGraph.length * 1.5);
+		const gradient = this.Face.ctx.createLinearGradient(0, 0, 100, 0);
+
+		gradient.addColorStop(0, `hsla(${this.Face.Hue.current}, 100%, 65%, 0)`);
+		gradient.addColorStop(1, `hsla(${this.Face.Hue.current}, 100%, 65%, ${alpha})`);
+
+		return gradient;
+
+	}
+
+	/**
+	 * Color the current graph instance.
+	 * @return {object} A canvas gradient.
+	 */
+	currentColor() {
+
+		const gradient = this.Face.ctx.createLinearGradient(0, 0, 100, 0);
+
+		gradient.addColorStop(0, `hsla(${this.Face.Hue.current}, 100%, 65%, 0)`);
+		gradient.addColorStop(1, `hsla(${this.Face.Hue.current}, 100%, 65%, 1)`);
+
+		return gradient;
+
+	}
+
+	/**
+	 * Draw a graph instance.
+	 * @param {string} graph - the current graph instance i.e. ‘current’ / ‘legacy’.
+	 */
+	drawGraph(graph) {
+
+		const ctx = this.Face.ctx;
+
+		ctx.beginPath();
+		ctx.moveTo(0, this.BaseLine);
+		this.drawPoints(ctx, graph);
+		ctx.strokeStyle = this[`${graph}Color`](ctx);
+		ctx.stroke();
+		ctx.closePath();
+
+	}
+
+	/**
+	 * Checks if there is room for more current graph points of if we need to
+	 * generate a new current instance.
+	 */
+	queryCircumstance() {
+
+		if (this.currentGraph.length >= this.Face.size) this.updateLegacy();
+
+	}
+
+	/**
+	 * inject required graph instance onto the canvas.
+	 */
+	injectInstances() {
+
+		for (const graph of ['legacy', 'current']) this.drawGraph(graph);
+
+	}
+
+	/**
+	 * Draws in the bright circular “pip” the indicates the currents graph progress.
+	 */
+	injectProgress() {
+
+		const ctx = this.Face.ctx;
+		const length = this.currentGraph.length;
+		const radius = 3;
+		const x = length - radius;
+		const y = this.BaseLine - this.currentGraph[length - 1];
+
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = this.currentColor();
+        ctx.fill();
+		ctx.closePath();
+
+	}
+
+	/**
+	 * Decide the severity of the current heart beat - this will dictate how
+	 * dominant the sign curves influence is on the graph.
+	 */
+	registerBeat() {
+
+		this.i = Helper.randomise({min: 5, max: 15});
+
+	}
+
+	/**
+	 * Runs through the sequence in order to update the graph sequence.
+	 */
+	animate() {
+
+		this.queryCircumstance();
+		this.updateCurrent();
+		this.injectInstances();
+		this.injectProgress();
+
+	}
+
+};
+
+module.exports = Graph;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-._background.html">./background</a></li><li><a href="module-._beat.html">./beat</a></li><li><a href="module-._face.html">./face</a></li><li><a href="module-._graph.html">./graph</a></li><li><a href="module-._heart.html">./heart</a></li><li><a href="module-._helper.html">./helper</a></li><li><a href="module-._hue.html">./hue</a></li><li><a href="module-._pause.html">./pause</a></li><li><a href="module-._rate.html">./rate</a></li><li><a href="module-._timer.html">./timer</a></li></ul><h3>Classes</h3><ul><li><a href="module-._background-Background.html">Background</a></li><li><a href="module-._beat-Beat.html">Beat</a></li><li><a href="module-._face-Face.html">Face</a></li><li><a href="module-._graph-Graph.html">Graph</a></li><li><a href="module-._heart-Heart.html">Heart</a></li><li><a href="module-._helper-Helper.html">Helper</a></li><li><a href="module-._hue-Hue.html">Hue</a></li><li><a href="module-._pause-Pause.html">Pause</a></li><li><a href="module-._rate-Rate.html">Rate</a></li><li><a href="module-._timer-Timer.html">Timer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Mar 20 2016 17:02:17 GMT+1300 (NZDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
