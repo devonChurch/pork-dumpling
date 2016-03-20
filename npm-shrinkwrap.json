@@ -1,0 +1,90 @@
+{
+  "name": "pork-dumpling",
+  "version": "1.0.0",
+  "dependencies": {
+    "async": {
+      "version": "1.4.2",
+      "from": "async@>=1.4.0 <1.5.0",
+      "resolved": "https://registry.npmjs.org/async/-/async-1.4.2.tgz"
+    },
+    "bluebird": {
+      "version": "2.9.34",
+      "from": "bluebird@>=2.9.34 <2.10.0",
+      "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-2.9.34.tgz"
+    },
+    "catharsis": {
+      "version": "0.8.7",
+      "from": "catharsis@>=0.8.7 <0.9.0",
+      "resolved": "https://registry.npmjs.org/catharsis/-/catharsis-0.8.7.tgz"
+    },
+    "escape-string-regexp": {
+      "version": "1.0.5",
+      "from": "escape-string-regexp@>=1.0.3 <1.1.0",
+      "resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
+    },
+    "espree": {
+      "version": "2.2.5",
+      "from": "espree@>=2.2.3 <2.3.0",
+      "resolved": "https://registry.npmjs.org/espree/-/espree-2.2.5.tgz"
+    },
+    "ifvisible.js": {
+      "version": "1.0.6",
+      "from": "ifvisible.js@*",
+      "resolved": "https://registry.npmjs.org/ifvisible.js/-/ifvisible.js-1.0.6.tgz"
+    },
+    "js2xmlparser": {
+      "version": "1.0.0",
+      "from": "js2xmlparser@>=1.0.0 <1.1.0",
+      "resolved": "https://registry.npmjs.org/js2xmlparser/-/js2xmlparser-1.0.0.tgz"
+    },
+    "marked": {
+      "version": "0.3.5",
+      "from": "marked@>=0.3.4 <0.4.0",
+      "resolved": "https://registry.npmjs.org/marked/-/marked-0.3.5.tgz"
+    },
+    "requizzle": {
+      "version": "0.2.1",
+      "from": "requizzle@>=0.2.0 <0.3.0",
+      "resolved": "https://registry.npmjs.org/requizzle/-/requizzle-0.2.1.tgz",
+      "dependencies": {
+        "underscore": {
+          "version": "1.6.0",
+          "from": "underscore@>=1.6.0 <1.7.0",
+          "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
+        }
+      }
+    },
+    "strip-json-comments": {
+      "version": "1.0.4",
+      "from": "strip-json-comments@>=1.0.2 <1.1.0",
+      "resolved": "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-1.0.4.tgz"
+    },
+    "taffydb": {
+      "version": "2.6.2",
+      "from": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
+      "resolved": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e"
+    },
+    "underscore": {
+      "version": "1.8.3",
+      "from": "underscore@>=1.8.3 <1.9.0",
+      "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz"
+    },
+    "underscore-contrib": {
+      "version": "0.3.0",
+      "from": "underscore-contrib@>=0.3.0 <0.4.0",
+      "resolved": "https://registry.npmjs.org/underscore-contrib/-/underscore-contrib-0.3.0.tgz",
+      "dependencies": {
+        "underscore": {
+          "version": "1.6.0",
+          "from": "underscore@1.6.0",
+          "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
+        }
+      }
+    },
+    "wrench": {
+      "version": "1.5.8",
+      "from": "wrench@>=1.5.8 <1.6.0",
+      "resolved": "https://registry.npmjs.org/wrench/-/wrench-1.5.8.tgz"
+    }
+  }
+}

@@ -34,7 +34,7 @@ const Hue = class {
 	}
 
 	/**
-	 * Prompts the current hue value to increment.
+	 * Prompts the current hue value to increment on each requestAnimationFrame tick.
 	 */
 	animate() {
 

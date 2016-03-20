@@ -4,7 +4,7 @@
  */
 
 /**
- * Class xxxxxx
+ * Class that represents the current average heart rate in a BPM format.
  */
 const Rate = class {
 
@@ -21,6 +21,9 @@ const Rate = class {
 
 	}
 
+	/**
+	 * Calculate the average BPM value.
+	 */
 	updateBpm() {
 
 		const equaliser = 60000 / this.Face.Timer.elapsedTime;
@@ -30,6 +33,10 @@ const Rate = class {
 
 	}
 
+	/**
+	 * Inject the BPM text onto the canvas area making sure the different text
+	 * elements flow next to each other like generic text in the DOM.
+	 */
 	injectBpm() {
 
 		const ctx = this.Face.ctx;
@@ -37,27 +44,23 @@ const Rate = class {
 		const units = ' bpm';
 		const y = 70;
 		const hsl = `hsl(${this.Face.Hue.current}, 100%, 65%)`;
-
 		let x = 85;
 
 		ctx.font = '300 30px Roboto';
 		ctx.fillStyle = hsl;
 		ctx.fillText(bpm, x, y);
-
 		x += ctx.measureText(bpm).width;
-
 		ctx.font = '300 12px Roboto';
 		ctx.fillStyle = hsl;
 		ctx.fillText(units, x, y);
 
 	}
 
-	// current time * x = 60000ms
-	// 2bpm / 1000 = Math.round(2 * 60) = 120bpm / min
-	// 180000 * x = 60000 |
-	// 360bpm / 180000 = 360 * 0.333333 = 120bpm / min
-	// 3,600,000
-
+	/**
+	 * We update the BPM value every 60 frames to avoid possible flickering as
+	 * the BPM’s average constantly changes.
+	 * @return {boolean} Checks if the 60 frame duration has elapsed.
+	 */
 	get frequency() {
 
 		const frequency = 60;
@@ -68,6 +71,9 @@ const Rate = class {
 
 	}
 
+	/**
+	 * Updates the BPM value on each requestAnimationFrame tick.
+	 */
 	animate() {
 
 		if (this.frequency) this.updateBpm();

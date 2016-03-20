@@ -8,8 +8,21 @@ const Heart = require('./heart');
 const Rate = require('./rate');
 const Graph = require('./graph');
 
+/**
+ * Face module.
+ * @module ./face
+ */
+
+/**
+ * Class that acts as the root initialiser for the Pork Dumpling execution.
+ */
 const Face = class {
 
+	/**
+	 * Create a watch face instance.
+	 * @param {class} canvas - The sole canvas element that the execution
+	 * instance will be constructed on.
+	 */
 	constructor(canvas) {
 
 		this.canvas = canvas;
@@ -27,9 +40,10 @@ const Face = class {
 
 	}
 
+	/*
+	 * The required redraw functions executed each requestAnimationFrame tick.
+	 **/
 	animate() {
-
-		console.log('+');
 
 		Helper.clearCanvas(this);
 		this.Hue.animate();
